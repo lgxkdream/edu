@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LessonMapper">
+<!--批量插入,用于初始化课表-->
+	<insert id = "batchAdd" parameterType="list">
+		insert into LESSON(
+			ID,
+			START_DATE,
+			END_DATE,
+			CAMPUS_ID,
+			CAMPUS_NAME,
+			TIME_ID,
+			TIME,
+			CLASSROOM_ID,
+			CLASSROOM_NAME
+		)values
+		<foreach collection="list" item="item" index="index" close=")" open="(" separator="),(">
+				#{item.ID},
+				#{item.START_DATE},
+				#{item.END_DATE},
+				#{item.CAMPUS_ID},
+				#{item.CAMPUS_NAME},
+				#{item.TIME_ID},
+				#{item.TIME},
+				#{item.CLASSROOM_ID},
+				#{item.CLASSROOM_NAME}
+		</foreach>
+	</insert>
+<!--  根据校区id,校区名,时间,查询课表	-->
+	<select id="list" parameterType="pd" resultType="pd">
+		select 
+			ID,
+			START_DATE,
+			END_DATE,
+			CAMPUS_ID,
+			CAMPUS_NAME,
+			TIME_ID,
+			TIME,
+			CLASSROOM_ID,
+			CLASSROOM_NAME,
+			MON_CLASS_ID,
+			MON_CLASS_NAME,
+			TUE_CLASS_ID,
+			TUE_CLASS_NAME,
+			WED_CLASS_ID,
+			WED_CLASS_NAME,
+			THU_CLASS_ID,
+			THU_CLASS_NAME,
+			FRI_CLASS_ID,
+			FRI_CLASS_NAME,
+			SAT_CLASS_ID,
+			SAT_CLASS_NAME,
+			SUN_CLASS_ID,
+			SUN_CLASS_NAME
+		from LESSON
+		<where>
+			<if test="CAMPUS_ID!=null and CAMPUS_ID!=''">
+			and CAMPUS_ID=#{CAMPUS_ID}
+			</if>
+			<if test="CAMPUS_NAME!=null and CAMPUS_NAME!=''">
+			and CAMPUS_NAME=#{CAMPUS_NAME}
+			</if>
+			<if test="START_DATE!=null and START_DATE!=''">
+			and START_DATE=#{START_DATE}
+			</if>
+			<if test="END_DATE!=null and END_DATE!=''">
+			and END_DATE=#{END_DATE}
+			</if>
+			<if test="DATE!=null and DATE!=''">
+			and START_DATE 	&lt;=#{DATE}
+			and END_DATE 	&gt;=#{DATE} 
+			</if>
+		</where>
+		order by CAMPUS_ID,TIME_ID,CLASSROOM_NAME
+	</select>
+	<update id="batchUpdate" parameterType="pd">
+                update LESSON 
+                <set>
+                  	MON_CLASS_ID=#{MON_CLASS_ID},
+                  	MON_CLASS_NAME=#{MON_CLASS_NAME},
+                  	TUE_CLASS_ID=#{TUE_CLASS_ID},
+                  	TUE_CLASS_NAME=#{TUE_CLASS_NAME},
+                  	WED_CLASS_ID=#{WED_CLASS_ID},
+                  	WED_CLASS_NAME=#{WED_CLASS_NAME},
+                  	THU_CLASS_ID=#{THU_CLASS_ID},
+                  	THU_CLASS_NAME=#{THU_CLASS_NAME},
+                  	FRI_CLASS_ID=#{FRI_CLASS_ID},
+                  	FRI_CLASS_NAME=#{FRI_CLASS_NAME},
+                  	SAT_CLASS_ID=#{SAT_CLASS_ID},
+                  	SAT_CLASS_NAME=#{SAT_CLASS_NAME},
+                  	SUN_CLASS_ID=#{SUN_CLASS_ID},
+                  	SUN_CLASS_NAME=#{SUN_CLASS_NAME}
+                </set>
+                where ID = #{ID}
+	</update>
+</mapper>

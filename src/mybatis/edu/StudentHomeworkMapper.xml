@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StudentHomeworkMapper">
+	
+
+	
+	
+<!--	再查看	-->
+	<select id="show_homework" parameterType="pd" resultType="pd">
+		select 
+				COUNT(*)
+		from 
+				STUDENT_HOMEWORK WHERE status='1' and ch_id=#{CH_ID}
+		
+	</select>
+	
+	<select id="show_studnetname" parameterType="pd" resultType="pd">
+		select 
+				student_name
+		from 
+				STUDENT_HOMEWORK WHERE status in ('0','2') and ch_id=#{CH_ID}
+		
+	</select>
+
+	
+	<!-- 插入题目到student_homework表-->
+	<insert id="saveHomeworkToStudent" parameterType="pd">
+		insert into STUDENT_HOMEWORK(
+			ID,	
+			CH_ID,
+			TITLE,
+			CLASS_ID,
+			CLASS_NAME,	
+			STUDENT_ID,
+			STUDENT_NAME,
+			HOMEWORKS,
+			HOMEWORKS2,
+			HOMEWORK_CREATE_TIME,
+			ANSWER,
+			ANSWER_PATH,
+			SCORE,
+			TEACHER_REMARK,
+			STATUS,
+			CREATE_TIME,	
+			CREATOR,	
+			CREATOR_NAME,
+			END_TIME
+		) values (
+			#{ID},	
+			#{CH_ID},
+			#{TITLE},	
+			#{CLASS_ID},	
+			#{CLASS_NAME},
+			#{STUDENT_ID},
+			#{STUDENT_NAME},	
+			#{HOMEWORKS},
+			#{HOMEWORKS2},
+			#{HOMEWORK_CREATE_TIME},
+			#{ANSWER},	
+			#{ANSWER_PATH},
+			#{SCORE},
+			#{TEACHER_REMARK},	
+			#{STATUS},
+			#{CREATE_TIME},	
+			#{CREATOR},	
+			#{CREATOR_NAME},
+			#{END_TIME}
+		)
+	</insert>
+	<!-- 批量删除 -->
+	<delete id="deleteByChid" parameterType="String">
+		delete from STUDENT_HOMEWORK
+		where 
+			CH_ID=#{CH_ID}
+	</delete>
+	
+	<!-- 新增-->
+	<insert id="save" parameterType="pd">
+		insert into STUDENT_HOMEWORK(
+		TITLE,
+		CLASS_ID,
+		CLASS_NAME,
+		STUDENT_ID,
+		STUDENT_NAME,
+		HOMEWORKS,
+		HOMEWORKS2,
+		SUBMIT_TIME,
+		END_TIME,
+		HOMEWORK_CREATE_TIME,
+		ANSWER,
+		ANSWER_PATH,
+		SCORE,
+		TEACHER_REMARK,
+		STATUS,
+		CREATE_TIME,
+		CREATOR,
+		CREATOR_NAME,
+		ID
+		) values (
+		#{TITLE},
+		#{CLASS_ID},
+		#{CLASS_NAME},
+		#{STUDENT_ID},
+		#{STUDENT_NAME},
+		#{HOMEWORKS},
+		#{HOMEWORKS2},
+		#{SUBMIT_TIME},
+		#{END_TIME},
+		#{HOMEWORK_CREATE_TIME},
+		#{ANSWER},
+		#{ANSWER_PATH},
+		#{SCORE},
+		#{TEACHER_REMARK},
+		#{STATUS},
+		#{CREATE_TIME},
+		#{CREATOR},
+		#{CREATOR_NAME},
+		#{ID}
+		)
+	</insert>
+
+
+	<!-- 删除-->
+	<delete id="delete" parameterType="pd">
+		delete from STUDENT_HOMEWORK
+		where
+		ID =
+		#{ID}
+	</delete>
+	<!-- 删除答案附件 -->
+	<update id="deleteAnswer" parameterType="pd">
+		update STUDENT_HOMEWORK
+			set
+			ANSWER_PATH =null
+		where
+		ID = #{ID}
+	</update>
+
+	<!-- 修改 -->
+	<update id="edit" parameterType="pd">
+		update STUDENT_HOMEWORK
+		<set>
+		<if test=" TITLE != null">	
+		TITLE=#{TITLE},
+		</if>
+		<if test=" CLASS_ID != null">	
+		CLASS_ID=#{CLASS_ID},
+		</if>
+		<if test=" CLASS_NAME != null">	
+		CLASS_NAME=#{CLASS_NAME},
+		</if>
+		<if test=" STUDENT_ID != null">	
+		STUDENT_ID=#{STUDENT_ID},
+		</if>
+		<if test=" STUDENT_NAME != null">	
+		STUDENT_NAME=#{STUDENT_NAME},
+		</if>
+		<if test=" SUBMIT_TIME != null">	
+		SUBMIT_TIME=#{SUBMIT_TIME},
+		</if>
+		<if test=" HOMEWORKS != null">	
+		HOMEWORKS=#{HOMEWORKS},
+		</if>
+		<if test=" HOMEWORKS2 != null">	
+		HOMEWORKS2=#{HOMEWORKS2},
+		</if>
+		<if test=" END_TIME != null">	
+		END_TIME=#{END_TIME},
+		</if>
+		<if test=" HOMEWORK_CREATE_TIME != null">	
+		HOMEWORK_CREATE_TIME=#{HOMEWORK_CREATE_TIME},
+		</if>
+		<if test=" ANSWER != null">	
+		ANSWER=#{ANSWER},
+		</if>
+		<if test=" ANSWER_PATH != null">	
+		ANSWER_PATH=#{ANSWER_PATH},
+		</if>
+		<if test=" SCORE != null">	
+		SCORE=#{SCORE},
+		</if>
+		<if test=" TEACHER_REMARK != null">	
+		TEACHER_REMARK=#{TEACHER_REMARK},
+		</if>
+		<if test=" STATUS != null">	
+		STATUS=#{STATUS},
+		</if>
+		<if test=" CREATE_TIME != null">	
+		CREATE_TIME=#{CREATE_TIME},
+		</if>
+		<if test=" CREATOR != null">	
+		CREATOR=#{CREATOR},
+		</if>
+		<if test=" CREATOR != null">	
+		CREATOR_NAME=#{CREATOR_NAME}
+		</if>
+		</set>
+		where
+			ID =#{ID}
+	</update>
+
+	<!-- 通过ID获取数据 -->
+	<select id="findById" parameterType="pd" resultType="pd">
+		select
+		TITLE,
+		CLASS_ID,
+		CLASS_NAME,
+		STUDENT_ID,
+		STUDENT_NAME,
+		HOMEWORKS,
+		HOMEWORKS2,
+		SUBMIT_TIME,
+		END_TIME,
+		HOMEWORK_CREATE_TIME,
+		ANSWER,
+		ANSWER_PATH,
+		SCORE,
+		TEACHER_REMARK,
+		STATUS,
+		CREATE_TIME,
+		CREATOR,
+		CREATOR_NAME,
+		ID,
+		CH_ID
+		from
+		STUDENT_HOMEWORK
+		where
+		ID =
+		#{ID}
+	</select>
+
+
+	<!-- 列表 检索-->
+	<select id="datalistPage" parameterType="page" resultType="pd">
+		select
+		a.TITLE,
+		a.CLASS_ID,
+		a.CLASS_NAME,
+		a.STUDENT_ID,
+		a.STUDENT_NAME,
+		a.HOMEWORKS,
+		a.HOMEWORKS2,
+		a.SUBMIT_TIME,
+		a.END_TIME,
+		a.HOMEWORK_CREATE_TIME,
+		a.ANSWER,
+		a.ANSWER_PATH,
+		a.SCORE,
+		a.TEACHER_REMARK,
+		a.STATUS,
+		a.CREATE_TIME,
+		a.CREATOR,
+		a.CREATOR_NAME,
+		a.ID,
+		a.CH_ID
+		from
+		STUDENT_HOMEWORK a
+		<where>
+		<if test=" pd.STUDENT_ID != null and pd.STUDENT_ID !='' ">
+			a.STUDENT_ID = #{pd.STUDENT_ID}
+		</if>
+		<if test="pd.TITLE != null and pd.TITLE != ''"><!-- 关键词检索 -->
+			and a.TITLE LIKE  "%"#{pd.TITLE}"%"
+		</if>
+		<if test=" pd.CREATE_TIME != null and pd.CREATE_TIME !='' ">
+			and a.CREATE_TIME = #{pd.CREATE_TIME}
+		</if>
+		<if test=" pd.CREATE_TIME_START != null and pd.CREATE_TIME_START !='' ">
+			and #{pd.CREATE_TIME_START} &lt;= a.CREATE_TIME
+		</if>
+		<if test=" pd.CREATE_TIME_END != null and pd.CREATE_TIME_END !='' ">
+			and a.CREATE_TIME &lt;= #{pd.CREATE_TIME_END}
+		</if>
+		</where>
+		order by a.CREATE_TIME desc,a.ID
+	</select>
+	<!-- 列表(全部) -->
+	<select id="listAll" parameterType="pd" resultType="pd">
+		select
+		a.TITLE,
+		a.CLASS_ID,
+		a.CLASS_NAME,
+		a.STUDENT_ID,
+		a.STUDENT_NAME,
+		a.HOMEWORKS,
+		a.HOMEWORKS2,
+		a.SUBMIT_TIME,
+		a.END_TIME,
+		a.HOMEWORK_CREATE_TIME,
+		a.ANSWER,
+		a.ANSWER_PATH,
+		a.SCORE,
+		a.TEACHER_REMARK,
+		a.STATUS,
+		a.CREATE_TIME,
+		a.CREATOR,
+		a.CREATOR_NAME,
+		a.ID,
+		a.CH_ID
+		from
+		STUDENT_HOMEWORK a
+		
+		<where>
+		<if test=" CH_ID != null and CH_ID !='' ">
+			a.CH_ID = #{CH_ID}
+		</if>
+		<if test=" STUDENT_ID != null and STUDENT_ID !='' ">
+			a.STUDENT_ID = #{STUDENT_ID}
+		</if>
+		<if test="TITLE != null and TITLE != ''"><!-- 关键词检索 -->
+			and a.TITLE LIKE  "%"#{TITLE}"%"
+		</if>
+		<if test=" CREATE_TIME != null and CREATE_TIME !='' ">
+			and a.CREATE_TIME = #{CREATE_TIME}
+		</if>
+		<if test=" CREATE_TIME_START != null and CREATE_TIME_START !='' ">
+			and #{CREATE_TIME_START} &lt;= a.CREATE_TIME
+		</if>
+		<if test=" CREATE_TIME_END != null and CREATE_TIME_END !='' ">
+			and a.CREATE_TIME &lt;= #{CREATE_TIME_END}
+		</if>
+		</where>
+		
+		order by a.CREATE_TIME desc,
+		STATUS ,
+		a.ID
+	</select>
+	<!-- 列表(全部) -->
+	<select id="showStudentHomework" parameterType="pd" resultType="pd">
+		select
+		a.TITLE,
+		a.CLASS_ID,
+		a.CLASS_NAME,
+		a.STUDENT_ID,
+		a.STUDENT_NAME,
+		a.HOMEWORKS,
+		a.HOMEWORKS2,
+		a.SUBMIT_TIME,
+		a.END_TIME,
+		a.HOMEWORK_CREATE_TIME,
+		a.ANSWER,
+		a.ANSWER_PATH,
+		a.SCORE,
+		a.TEACHER_REMARK,
+		a.STATUS,
+		a.CREATE_TIME,
+		a.CREATOR,
+		a.CREATOR_NAME,
+		a.ID,
+		a.CH_ID
+		from
+		STUDENT_HOMEWORK a
+		
+		<where>
+		<if test=" CH_ID != null and CH_ID !='' ">
+			a.CH_ID = #{CH_ID}
+		</if>
+		<if test=" STUDENT_ID != null and STUDENT_ID !='' ">
+			a.STUDENT_ID = #{STUDENT_ID}
+		</if>
+		<if test="TITLE != null and TITLE != ''"><!-- 关键词检索 -->
+			and a.TITLE LIKE  "%"#{TITLE}"%"
+		</if>
+		<if test=" CREATE_TIME != null and CREATE_TIME !='' ">
+			and a.CREATE_TIME = #{CREATE_TIME}
+		</if>
+		<if test=" CREATE_TIME_START != null and CREATE_TIME_START !='' ">
+			and #{CREATE_TIME_START} &lt;= a.CREATE_TIME
+		</if>
+		<if test=" CREATE_TIME_END != null and CREATE_TIME_END !='' ">
+			and a.CREATE_TIME &lt;= #{CREATE_TIME_END}
+		</if>
+		<if test=" STATUS != null and STATUS !='' ">
+			and a.STATUS = #{STATUS}
+		</if>
+		<if test="  UNEQUAL_STATUS != null and UNEQUAL_STATUS !='' ">
+			and a.STATUS &lt;&gt; #{UNEQUAL_STATUS}
+		</if>
+		
+		</where>
+		
+		order by STATUS,SUBMIT_TIME Desc ,
+		a.ID
+	</select>
+
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="String">
+		delete from STUDENT_HOMEWORK
+		where
+		ID in
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+</mapper>

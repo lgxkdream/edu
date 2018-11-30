@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dic_classroom">
+	<insert id="insert" parameterType="hashmap" keyProperty="string">
+		insert
+		into dic_classroom
+		(
+				ID,
+				,NAME
+				,CAMPUS_ID
+				,CAMPUS_NAME
+				,SORT
+		)
+		values
+		(
+						#{ID}
+						,#{NAME}
+						,#{CAMPUS_ID}
+						,#{CAMPUS_NAME}
+						,#{SORT}
+		)
+	</insert>
+
+	<delete id="delete" parameterType="string">
+		delete from dic_classroom
+		where
+		id = #{id}
+	</delete>
+
+	<update id="update" parameterType="hashmap">
+		update dic_classroom
+		<set>
+				<if test=" id != null ">
+					id = #{id},
+				</if>
+				<if test=" name != null ">
+					name = #{name},
+				</if>
+				<if test=" campus_id != null ">
+					campus_id = #{campus_id},
+				</if>
+				<if test=" campus_name != null ">
+					campus_name = #{campus_name},
+				</if>
+				<if test=" sort != null ">
+					sort = #{sort},
+				</if>
+		</set>
+		where id = #{id}
+	</update>
+
+	<select id="select_info" parameterType="hashmap" resultType="pd">
+		select 
+				ID
+				,NAME
+				,CAMPUS_ID
+				,CAMPUS_NAME
+				,SORT
+		from dic_classroom 
+		<where>
+				<if test=" ID != null and ID !='' ">
+					AND ID = #{ID}
+				</if>
+				<if test=" NAME != null and NAME !='' ">
+					and NAME = #{name}
+				</if>
+				<if test=" CAMPUS_ID != null and CAMPUS_ID !='' ">
+					and CAMPUS_ID = #{CAMPUS_ID}
+				</if>
+				<if test=" CAMPUS_NAME != null and CAMPUS_NAME !='' ">
+					and CAMPUS_NAME = #{CAMPUS_NAME}
+				</if>
+				<if test=" SORT != null and SORT !='' ">
+					and SORT = #{SORT}
+				</if>
+		</where>
+		order by ID 
+	</select>
+
+	<select id="select_count" parameterType="hashmap" resultType="int">
+		select count(id) as c from dic_classroom
+		<where>
+				<if test=" id != null and id !='' ">
+					and id = #{id}
+				</if>
+				<if test=" name != null and name !='' ">
+					and name = #{name}
+				</if>
+				<if test=" campus_id != null and campus_id !='' ">
+					and campus_id = #{campus_id}
+				</if>
+				<if test=" campus_name != null and campus_name !='' ">
+					and campus_name = #{campus_name}
+				</if>
+				<if test=" sort != null and sort !='' ">
+					and sort = #{sort}
+				</if>
+		</where>
+	</select>
+	
+</mapper>
